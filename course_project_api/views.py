@@ -8,7 +8,7 @@ from course_project_api import serializers
 
 class HelloApiView(APIView):
     """Test the APIView"""
-    serializer_class = serializers.HelloSerializer #whenever you get put, patch, delete expect a field called name with a max length of 10
+    serializer_class = serializers.HelloSerializer  # whenever you get put, patch, delete expect a field called name with a max length of 10
 
     def get(self, request, format=None):
         """Return a list of APIView features"""
@@ -27,4 +27,16 @@ class HelloApiView(APIView):
             name = serializer.validated_data.get('name')
             message = f'Hello {name}'
             return Response({'message': message})
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk=None):
+        """Handle updating an object"""
+        return Response({'message': 'PUT'})
+
+    def patch(self, request, pk=None):
+        """Handle a partial update of the object"""
+        return Response({'message': 'PATCH'})
+
+    def delete(self, request, pk=None):
+        """Delete an object"""
+        return Response({'message': 'DELETE'})
