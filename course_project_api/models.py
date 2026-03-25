@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
+from django.conf import settings
 
 """
     The default user model in Django uses the username to login, but here
@@ -60,3 +61,17 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         """Return string representation of the user"""
         return self.email
+
+
+class ProfileFeedItem(models.Model):
+    """Profile status update """
+    # """We can't create an item for a profile that does not exist"""
+    user_profile = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                     # the best practice is to use the settings, not to hardcode the model name
+                                     on_delete=models.CASCADE)
+    status_text = models.CharField(max_length=255)
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        """Return the model as a string"""
+        return self.status_text
