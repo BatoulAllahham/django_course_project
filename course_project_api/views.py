@@ -96,10 +96,23 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
-    search_fields = ('name','email')
+    search_fields = ('name', 'email')
+
+
 class UserLoginView(ObtainAuthToken):
     """Handle authentication token"""
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    """To handle the profile feed items including creating, updating and reading"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('status_text',)
 
+    def perform_create(self, serializer):
+        """Create the profile to the loggedin user"""
+        serializer.save(user_profile=self.request.user)

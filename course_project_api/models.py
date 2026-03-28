@@ -66,6 +66,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 class ProfileFeedItem(models.Model):
     """Profile status update """
     # """We can't create an item for a profile that does not exist"""
+
     user_profile = models.ForeignKey(settings.AUTH_USER_MODEL,
                                      # the best practice is to use the settings, not to hardcode the model name
                                      on_delete=models.CASCADE)
